@@ -9,7 +9,9 @@ import (
 const (
 	screenWidth, screenHeight = 650, 360
 	birdsCount                = 500
-)
+	viewRadius                = 13
+	adjRate                   = 0.015
+) // The number of frames to skip before rendering.
 
 type Game struct{}
 
@@ -21,6 +23,8 @@ var green = color.RGBA{
 }
 
 var birds [birdsCount]*Bird
+
+var birdsMap [screenWidth][screenHeight]int
 
 func (g *Game) Update() error {
 	return nil
@@ -37,6 +41,14 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 func (g *Game) Layout(_, _ int) (int, int) {
 	return screenWidth, screenHeight
+}
+
+func init() {
+	for i, row := range birdsMap {
+		for j, _ := range row {
+			birdsMap[i][j] = -1
+		}
+	}
 }
 
 func main() {
